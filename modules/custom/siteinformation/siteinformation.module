@@ -1,0 +1,37 @@
+ <?php
+ /*
+ * @file
+ */
+ 
+use Drupal\Core\Form\FormStateInterface;
+
+
+ /**
+   * Implements hook_form_alter().
+   */
+  function siteinformation_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    // Altering the 'system_site_information_settings' form.
+	if ($form_id == system_site_information_settings) {
+		$siteapikey_value = \Drupal::state()->get('siteapikey'); // Get the siteapikey variable value.
+		$siteapikey_defaultValue = (empty($siteapikey_value) ? 'Site API Key' : $siteapikey_value); // returns true
+		// Adding new field to form.
+		$form['site_api_key'] = array(
+          '#type' => 'textfield',
+          '#title' => 'Site API Key',
+		  '#default_value' => $siteapikey_defaultValue,
+		  '#group' => 'site_information'
+          );
+	    $form['actions']['submit']['#value'] = t('Update configuration'); // altering the submit title.
+	    $form['#submit'][] = 'siteinformation_submit'; // Attached extra submit function.
+	}
+  }
+  
+  /**
+ * Handles the site information form submission.
+ */
+function siteinformation_submit($form, FormStateInterface $form_state) {
+	$siteApiKey_value = $form_state->getValue('site_api_key'); // Get Site api key value using getValue 'key'.
+	\Drupal::state()->delete('siteapikey'); //Null value before set.
+	\Drupal::state()->set('siteapikey', $siteApiKey_value); // Setting the  siteapikey variable.
+	drupal_set_message(t('Site API Key has been saved as "@value".', array('@value' => $siteApiKey_value)));
+}

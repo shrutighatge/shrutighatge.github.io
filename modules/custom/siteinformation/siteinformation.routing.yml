@@ -1,0 +1,8 @@
+siteinformation.form:
+  path: '/siteinformation'
+  defaults:
+    _form: '\Drupal\siteinformation\Form\siteinformation'
+    _title: 'Site Settings'
+  requirements:
+    _permission: 'access content'
+	

@@ -1,0 +1,5 @@
+name: SiteInformation
+type: module
+description: 'To Display site settings.'
+package: Custom
+core: '8.x'
